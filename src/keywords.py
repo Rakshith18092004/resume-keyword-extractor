@@ -3,10 +3,13 @@ import re
 
 def extract_keywords(text: str) -> list:
     """
-    Extract words from text and convert them to lowercase.
+    Extract keywords from text.
     """
 
-    # Find all words
-    words = re.findall(r"\b[a-zA-Z]+\b", text.lower())
+    words = [
+        word
+        for word in re.findall(r"\b[a-zA-Z]+\b", text.lower())
+        if len(word) > 2
+    ]
 
-    return list(set(words))
+    return list(dict.fromkeys(words))
