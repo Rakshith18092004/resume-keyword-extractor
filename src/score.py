@@ -18,11 +18,22 @@ def calculate_match(resume_keywords, jd_keywords):
 
 def get_matched_keywords(resume_keywords, jd_keywords):
     """
-    Return the keywords that are present in both
-    the resume and the job description.
+    Return keywords present in both resume and job description.
     """
 
     resume_set = set(resume_keywords)
     jd_set = set(jd_keywords)
 
     return list(resume_set.intersection(jd_set))
+
+
+def get_missing_keywords(resume_keywords, jd_keywords):
+    """
+    Return keywords that are in the job description
+    but missing from the resume.
+    """
+
+    resume_set = set(resume_keywords)
+    jd_set = set(jd_keywords)
+
+    return list(jd_set - resume_set)
