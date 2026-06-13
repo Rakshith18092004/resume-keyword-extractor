@@ -1,0 +1,7 @@
+John Doe
+
+Skills:
+Python
+Git
+SQL
+Machine Learning

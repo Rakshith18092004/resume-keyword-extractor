@@ -1,29 +1,41 @@
 from pathlib import Path
+from PyPDF2 import PdfReader
 
 
 def extract_text(file_path: str) -> str:
     """
-    Reads a text file and returns its contents.
+    Extract text from a TXT or PDF file.
 
     Args:
-        file_path (str): Path to the text file.
+        file_path (str): Path to the input file.
 
     Returns:
-        str: Text inside the file.
+        str: Extracted text from the file.
     """
 
     path = Path(file_path)
 
-    # Check if the file exists
+    # Check if file exists
     if not path.exists():
         raise FileNotFoundError(f"File not found: {file_path}")
 
-    # Check if it is a .txt file
-    if path.suffix.lower() != ".txt":
-        raise ValueError("Only .txt files are supported right now.")
+    # Handle TXT files
+    if path.suffix.lower() == ".txt":
+        with open(path, "r", encoding="utf-8") as file:
+            return file.read()
 
-    # Read the file
-    with open(path, "r", encoding="utf-8") as file:
-        text = file.read()
+    # Handle PDF files
+    elif path.suffix.lower() == ".pdf":
+        reader = PdfReader(path)
+        text = ""
 
-    return text
+        for page in reader.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text + "\n"
+
+        return text
+
+    # Unsupported file type
+    else:
+        raise ValueError("Only .txt and .pdf files are supported.")
