@@ -9,4 +9,4 @@ def extract_keywords(text: str) -> list:
     # Find all words
     words = re.findall(r"\b[a-zA-Z]+\b", text.lower())
 
-    return words
+    return list(set(words))
