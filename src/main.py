@@ -41,87 +41,101 @@ def main():
     # Read the values passed through the command line
     args = parser.parse_args()
 
-    # ------------------------------------------
-    # Step 2: Extract text from both files
-    # extract_text() automatically handles
-    # TXT and PDF files.
-    # ------------------------------------------
-    resume_text = extract_text(args.resume)
-    jd_text = extract_text(args.jd)
+    try:
+        # ------------------------------------------
+        # Step 2: Extract text from both files
+        # extract_text() automatically handles
+        # TXT and PDF files.
+        # ------------------------------------------
+        resume_text = extract_text(args.resume)
+        jd_text = extract_text(args.jd)
+
+        # ------------------------------------------
+        # Step 3: Extract keywords from the text
+        # Converts text into useful keywords by
+        # removing duplicates and short words.
+        # ------------------------------------------
+        resume_keywords = extract_keywords(resume_text)
+        jd_keywords = extract_keywords(jd_text)
+
+        # ------------------------------------------
+        # Step 4: Compare resume and job description
+        # ------------------------------------------
+
+        # Calculate overall match percentage
+        match_percentage = calculate_match(resume_keywords, jd_keywords)
+
+        # Find keywords present in both files
+        matched = get_matched_keywords(resume_keywords, jd_keywords)
+
+        # Find keywords missing from the resume
+        missing = get_missing_keywords(resume_keywords, jd_keywords)
+
+        # ------------------------------------------
+        # Step 5: Prepare the report
+        # ------------------------------------------
+
+        report = []
+
+        report.append("=" * 50)
+        report.append("         Resume Keyword Analysis")
+        report.append("=" * 50)
+        report.append("")
+        report.append(f"Match Percentage : {match_percentage}%")
+        report.append("")
+
+        # Matched keywords
+        report.append("Matched Keywords")
+        report.append("-" * 20)
+
+        if matched:
+            for keyword in sorted(matched):
+                report.append(f"• {keyword}")
+        else:
+            report.append("No matched keywords found.")
+
+        report.append("")
+
+        # Missing keywords
+        report.append("Missing Keywords")
+        report.append("-" * 20)
+
+        if missing:
+            for keyword in sorted(missing):
+                report.append(f"• {keyword}")
+        else:
+            report.append("No missing keywords found.")
+
+        report.append("")
+        report.append("=" * 50)
+
+        # ------------------------------------------
+        # Step 6: Print the report to the terminal
+        # ------------------------------------------
+
+        print("\n".join(report))
+
+        # ------------------------------------------
+        # Step 7: Save the report to output/report.txt
+        # ------------------------------------------
+
+        with open("output/report.txt", "w", encoding="utf-8") as file:
+            file.write("\n".join(report))
+
+        print("\nReport successfully saved to output/report.txt")
 
     # ------------------------------------------
-    # Step 3: Extract keywords from the text
-    # Converts text into useful keywords by
-    # removing duplicates and short words.
-    # ------------------------------------------
-    resume_keywords = extract_keywords(resume_text)
-    jd_keywords = extract_keywords(jd_text)
-
-    # ------------------------------------------
-    # Step 4: Compare resume and job description
+    # Step 8: Handle possible errors gracefully
     # ------------------------------------------
 
-    # Calculate overall match percentage
-    match_percentage = calculate_match(resume_keywords, jd_keywords)
+    except FileNotFoundError as error:
+        print(f"\nError: {error}")
 
-    # Find keywords present in both files
-    matched = get_matched_keywords(resume_keywords, jd_keywords)
+    except ValueError as error:
+        print(f"\nError: {error}")
 
-    # Find keywords missing from the resume
-    missing = get_missing_keywords(resume_keywords, jd_keywords)
-
-    # ------------------------------------------
-    # Step 5: Prepare the report
-    # ------------------------------------------
-
-    report = []
-
-    report.append("=" * 50)
-    report.append("         Resume Keyword Analysis")
-    report.append("=" * 50)
-    report.append("")
-    report.append(f"Match Percentage : {match_percentage}%")
-    report.append("")
-
-    # Matched keywords
-    report.append("Matched Keywords")
-    report.append("-" * 20)
-
-    if matched:
-        for keyword in sorted(matched):
-            report.append(f"• {keyword}")
-    else:
-        report.append("No matched keywords found.")
-
-    report.append("")
-
-    # Missing keywords
-    report.append("Missing Keywords")
-    report.append("-" * 20)
-
-    if missing:
-        for keyword in sorted(missing):
-            report.append(f"• {keyword}")
-    else:
-        report.append("No missing keywords found.")
-
-    report.append("")
-    report.append("=" * 50)
-
-    # ------------------------------------------
-    # Step 6: Print the report to the terminal
-    # ------------------------------------------
-
-    print("\n".join(report))
-
-    # ------------------------------------------
-    # Step 7: Save the report to output/report.txt
-    # ------------------------------------------
-
-    with open("output/report.txt", "w", encoding="utf-8") as file:
-        file.write("\n".join(report))
-
-    print("\nReport successfully saved to output/report.txt")
+    except Exception as error:
+        print(f"\nUnexpected Error: {error}")
 
 
 # Start the program from here
