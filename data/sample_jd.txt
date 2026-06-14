@@ -1,0 +1,16 @@
+Python Developer
+
+Responsibilities:
+- Develop Python applications
+- Work with Git and SQL databases
+- Build Machine Learning models
+- Collaborate with teams
+
+Required Skills:
+Python
+Git
+SQL
+Machine Learning
+Docker
+Communication
+Problem Solving
