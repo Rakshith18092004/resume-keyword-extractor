@@ -1,3 +1,4 @@
+
 import argparse
 
 # Import functions from other modules
@@ -15,6 +16,7 @@ def main():
     # Step 1: Create a command-line argument parser
     # This allows the user to provide file paths
     # while running the program.
+    #
     # Example:
     # python src/main.py --resume resume.pdf --jd job.txt
     # ------------------------------------------
@@ -69,17 +71,38 @@ def main():
     missing = get_missing_keywords(resume_keywords, jd_keywords)
 
     # ------------------------------------------
-    # Step 5: Display the results
+    # Step 5: Display the results neatly
     # ------------------------------------------
-    print("Match Percentage:", match_percentage, "%")
+
+    print("=" * 50)
+    print("         Resume Keyword Analysis")
+    print("=" * 50)
+
+    print(f"\nMatch Percentage : {match_percentage}%\n")
+
+    # Display matched keywords
+    print("Matched Keywords")
+    print("-" * 20)
+
+    if matched:
+        for keyword in sorted(matched):
+            print(f"• {keyword}")
+    else:
+        print("No matched keywords found.")
+
     print()
 
-    print("Matched Keywords:")
-    print(matched)
-    print()
+    # Display missing keywords
+    print("Missing Keywords")
+    print("-" * 20)
 
-    print("Missing Keywords:")
-    print(missing)
+    if missing:
+        for keyword in sorted(missing):
+            print(f"• {keyword}")
+    else:
+        print("No missing keywords found.")
+
+    print("\n" + "=" * 50)
 
 
 # Start the program from here
