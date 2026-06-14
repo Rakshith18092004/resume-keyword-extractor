@@ -71,40 +71,60 @@ def main():
     missing = get_missing_keywords(resume_keywords, jd_keywords)
 
     # ------------------------------------------
-    # Step 5: Display the results neatly
+    # Step 5: Prepare the report
     # ------------------------------------------
 
-    print("=" * 50)
-    print("         Resume Keyword Analysis")
-    print("=" * 50)
+    report = []
 
-    print(f"\nMatch Percentage : {match_percentage}%\n")
+    report.append("=" * 50)
+    report.append("         Resume Keyword Analysis")
+    report.append("=" * 50)
+    report.append("")
+    report.append(f"Match Percentage : {match_percentage}%")
+    report.append("")
 
-    # Display matched keywords
-    print("Matched Keywords")
-    print("-" * 20)
+    # Matched keywords
+    report.append("Matched Keywords")
+    report.append("-" * 20)
 
     if matched:
         for keyword in sorted(matched):
-            print(f"• {keyword}")
+            report.append(f"• {keyword}")
     else:
-        print("No matched keywords found.")
+        report.append("No matched keywords found.")
 
-    print()
+    report.append("")
 
-    # Display missing keywords
-    print("Missing Keywords")
-    print("-" * 20)
+    # Missing keywords
+    report.append("Missing Keywords")
+    report.append("-" * 20)
 
     if missing:
         for keyword in sorted(missing):
-            print(f"• {keyword}")
+            report.append(f"• {keyword}")
     else:
-        print("No missing keywords found.")
+        report.append("No missing keywords found.")
 
-    print("\n" + "=" * 50)
+    report.append("")
+    report.append("=" * 50)
+
+    # ------------------------------------------
+    # Step 6: Print the report to the terminal
+    # ------------------------------------------
+
+    print("\n".join(report))
+
+    # ------------------------------------------
+    # Step 7: Save the report to output/report.txt
+    # ------------------------------------------
+
+    with open("output/report.txt", "w", encoding="utf-8") as file:
+        file.write("\n".join(report))
+
+    print("\nReport successfully saved to output/report.txt")
 
 
 # Start the program from here
 if __name__ == "__main__":
     main()
+
